@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GemFlix - Login</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: #080d18;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 420px;
+        background: #111b2c;
+        border: 1px solid #263951;
+        padding: 35px;
+        border-radius: 18px;
+        box-shadow: 0 15px 45px #0005;
+      }
+
+      .logo {
+        text-align: center;
+        font-size: 32px;
+        font-weight: bold;
+        color: #45a1ff;
+        margin-bottom: 12px;
+      }
+
+      .logo span {
+        color: #ffd447;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #9aabc2;
+        margin-bottom: 30px;
+        line-height: 1.7;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 9px;
+        margin-top: 18px;
+        font-size: 14px;
+        color: #d8e4f5;
+      }
+
+      input {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #34455f;
+        border-radius: 9px;
+        background: #09111f;
+        color: white;
+        outline: none;
+        font-size: 15px;
+      }
+
+      input:focus {
+        border-color: #45a1ff;
+      }
+
+      button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 25px;
+        border: none;
+        border-radius: 9px;
+        background: #2788ff;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      button:hover {
+        background: #0868dc;
+      }
+
+      .message {
+        text-align: center;
+        margin-top: 18px;
+        line-height: 1.6;
+        font-size: 14px;
+      }
+
+      #videos {
+        display: none;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      .video-card {
+        margin-top: 20px;
+        padding: 15px;
+        background: #111b2c;
+        border-radius: 12px;
+      }
+
+      video {
+        width: 100%;
+        margin-top: 12px;
+        border-radius: 8px;
+      }
+
+      .gems {
+        text-align: center;
+        margin: 20px 0;
+        color: #ffd447;
+        font-size: 22px;
+      }
+
+      .back {
+        background: #263951;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container" id="loginPage">
+      <div class="logo">Gem<span>Flix</span> 💎</div>
+
+      <p class="subtitle">
+        Log in to your account and watch videos to earn gems.
+      </p>
+
+      <h2>Login to your account</h2>
+
+      <form id="loginForm">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required
+        />
+
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          required
+        />
+
+        <label for="userId">Your ID</label>
+        <input type="text" id="userId" placeholder="Enter your ID" required />
+
+        <button type="submit">LOGIN</button>
+      </form>
+
+      <p class="message" id="message"></p>
+    </div>
+
+    <div id="videos">
+      <div class="logo">Gem<span>Flix</span> 💎</div>
+
+      <h2>Welcome!</h2>
+
+      <div class="gems">Your Gems: <span id="gemCount">0</span> 💎</div>
+
+      <p class="subtitle">Watch each video until the end to earn 5 gems.</p>
+
+      <div class="video-card">
+        <h3>Video 1</h3>
+        <video
+          controls
+          data-id="1"
+          src="https://www.w3schools.com/html/mov_bbb.mp4"
+        ></video>
+        <p class="message" id="status1">Reward: 5 gems</p>
+      </div>
+
+      <div class="video-card">
+        <h3>Video 2</h3>
+        <video
+          controls
+          data-id="2"
+          src="https://www.w3schools.com/html/movie.mp4"
+        ></video>
+        <p class="message" id="status2">Reward: 5 gems</p>
+      </div>
+
+      <button class="back" id="logout">LOG OUT</button>
+    </div>
+
+    <script>
+      /*
+  Demonstration only:
+  configure a real authentication backend before using real accounts.
+*/
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+          const id = document.getElementById("userId").value.trim();
+
+          // A real login must verify these details with an authentication server.
+          // This demo intentionally does not accept arbitrary credentials.
+
+          document.getElementById("message").textContent =
+            "Connect this form to your authentication service to verify your account.";
+        });
+
+      document.querySelectorAll("video[data-id]").forEach((video) => {
+        video.addEventListener("ended", () => {
+          const key = "gemflix_video_" + video.dataset.id;
+
+          if (localStorage.getItem(key)) return;
+
+          localStorage.setItem(key, "done");
+
+          const count = Number(localStorage.getItem("gemflix_gems") || 0) + 5;
+          localStorage.setItem("gemflix_gems", count);
+
+          document.getElementById("gemCount").textContent = count;
+          document.getElementById("status" + video.dataset.id).textContent =
+            "Reward claimed: 5 gems!";
+        });
+      });
+
+      document.getElementById("logout").addEventListener("click", () => {
+        document.getElementById("videos").style.display = "none";
+        document.getElementById("loginPage").style.display = "block";
+      });
+    </script>
+  </body>
+</html>
